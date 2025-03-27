@@ -23,7 +23,7 @@ from inspiremusic.utils.file_utils import logging
 import torch
 from inspiremusic.utils.audio_utils import trim_audio, fade_out, process_audio
 
-def set_env_variables():
+def env_variables():
     os.environ['PYTHONIOENCODING'] = 'UTF-8'
     os.environ['TOKENIZERS_PARALLELISM'] = 'False'
     current_working_dir = os.getcwd()
@@ -34,9 +34,9 @@ def set_env_variables():
     os.environ['PYTHONPATH'] = python_path
     sys.path.extend([main_root, third_party_matcha_tts_path])
 
-class InspireMusicUnified:
+class InspireMusic:
     def __init__(self,
-                 model_name: str = "InspireMusic-1.5B-Long",
+                 model_name: str,
                  model_dir: str = None,
                  min_generate_audio_seconds: float = 0.0,
                  max_generate_audio_seconds: float = 30.0,
@@ -221,71 +221,49 @@ class InspireMusicUnified:
 
 def get_args():
     parser = argparse.ArgumentParser(description='Run inference with your model')
-    parser.add_argument('-m', '--model_name', default="InspireMusic-1.5B-Long",
-                        help='Model name')
+    parser.add_argument('-m', '--model_name', default="InspireMusic-1.5B-Long", help='Model name')
     
-    parser.add_argument('-d', '--model_dir',
-                        help='Model folder path')
+    parser.add_argument('-d', '--model_dir', help='Model folder path')
     
-    parser.add_argument('-t', '--text', default="Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance.",
-                        help='Prompt text')
+    parser.add_argument('-t', '--text', default="Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance.", help='Prompt text')
     
-    parser.add_argument('-a', '--audio_prompt', default=None, 
-                        help='Prompt audio')
+    parser.add_argument('-a', '--audio_prompt', default=None, help='Prompt audio')
     
-    parser.add_argument('-c', '--chorus', default="intro", 
-                        help='Chorus tag generation mode (e.g., random, verse, chorus, intro, outro)')
+    parser.add_argument('-c', '--chorus', default="intro", help='Chorus tag generation mode (e.g., random, verse, chorus, intro, outro)')
     
-    parser.add_argument('-f', '--fast', type=bool, default=False, 
-                        help='Enable fast inference mode (without flow matching)')
+    parser.add_argument('-f', '--fast', type=bool, default=False, help='Enable fast inference mode (without flow matching)')
 
-    parser.add_argument('-g', '--gpu', type=int, default=1,
-                        help='GPU ID for this rank, -1 for CPU')
+    parser.add_argument('-g', '--gpu', type=int, default=1, help='GPU ID for this rank, -1 for CPU')
     
-    parser.add_argument('--task', default='text-to-music', choices=['text-to-music', 'continuation', 'reconstruct', 'super_resolution'],
-                        help='Inference task type: text-to-music, continuation, reconstruct, super_resolution')
+    parser.add_argument('--task', default='text-to-music', choices=['text-to-music', 'continuation', 'reconstruct', 'super_resolution'], help='Inference task type: text-to-music, continuation, reconstruct, super_resolution')
     
-    parser.add_argument('-r', '--result_dir', default="exp/inspiremusic", 
-                        help='Directory to save generated audio')
+    parser.add_argument('-r', '--result_dir', default="exp/inspiremusic", help='Directory to save generated audio')
     
-    parser.add_argument('-o', '--output_fn', default="output_audio", 
-                        help='Output file name')
+    parser.add_argument('-o', '--output_fn', default="output_audio", help='Output file name')
     
-    parser.add_argument('--format', type=str, default="wav", choices=["wav", "mp3", "m4a", "flac"],
-                        help='Format of output audio')
+    parser.add_argument('--format', type=str, default="wav", choices=["wav", "mp3", "m4a", "flac"], help='Format of output audio')
     
-    parser.add_argument('--sample_rate', type=int, default=24000, 
-                        help='Sampling rate of input audio')
+    parser.add_argument('--sample_rate', type=int, default=24000, help='Sampling rate of input audio')
     
-    parser.add_argument('--output_sample_rate', type=int, default=48000, choices=[24000, 48000],
-                        help='Sampling rate of generated output audio')
+    parser.add_argument('--output_sample_rate', type=int, default=48000, choices=[24000, 48000], help='Sampling rate of generated output audio')
     
-    parser.add_argument('-s', '--time_start', type=float, default=0.0, 
-                        help='Start time in seconds')
+    parser.add_argument('-s', '--time_start', type=float, default=0.0, help='Start time in seconds')
     
-    parser.add_argument('-e', '--time_end', type=float, default=30.0, 
-                        help='End time in seconds')
+    parser.add_argument('-e', '--time_end', type=float, default=30.0, help='End time in seconds')
     
-    parser.add_argument('--max_audio_prompt_length', type=float, default=5.0, 
-                        help='Maximum audio prompt length in seconds')
+    parser.add_argument('--max_audio_prompt_length', type=float, default=5.0, help='Maximum audio prompt length in seconds')
     
-    parser.add_argument('--min_generate_audio_seconds', type=float, default=10.0, 
-                        help='Minimum generated audio length in seconds')
+    parser.add_argument('--min_generate_audio_seconds', type=float, default=10.0, help='Minimum generated audio length in seconds')
     
-    parser.add_argument('--max_generate_audio_seconds', type=float, default=30.0, 
-                        help='Maximum generated audio length in seconds')
+    parser.add_argument('--max_generate_audio_seconds', type=float, default=30.0, help='Maximum generated audio length in seconds')
 
-    parser.add_argument('--fp16', type=bool, default=True, 
-                        help='Inference with fp16 model')
+    parser.add_argument('--fp16', type=bool, default=True, help='Inference with fp16 model')
     
-    parser.add_argument('--fade_out', type=bool, default=True, 
-                        help='Apply fade out effect to generated audio')
+    parser.add_argument('--fade_out', type=bool, default=True, help='Apply fade out effect to generated audio')
     
-    parser.add_argument('--fade_out_duration', type=float, default=1.0, 
-                        help='Fade out duration in seconds')
+    parser.add_argument('--fade_out_duration', type=float, default=1.0, help='Fade out duration in seconds')
     
-    parser.add_argument('--trim', type=bool, default=False, 
-                        help='Trim the silence ending of generated audio')    
+    parser.add_argument('--trim', type=bool, default=False, help='Trim the silence ending of generated audio')
 
     args = parser.parse_args()
 
@@ -294,11 +272,10 @@ def get_args():
 
     print(args)
     return args
-
 def main():
-    set_env_variables()
+    env_variables()
     args = get_args()
-    model = InspireMusicUnified(model_name = args.model_name,
+    model = InspireMusic(model_name = args.model_name,
                  model_dir = args.model_dir,
                  min_generate_audio_seconds = args.min_generate_audio_seconds,
                  max_generate_audio_seconds = args.max_generate_audio_seconds,

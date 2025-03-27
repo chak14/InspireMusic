@@ -26,19 +26,19 @@ InspireMusic is a fundamental AIGC toolkit and models designed for music, song, 
 <a name="highlights"></a>
 ## Highlights
 **InspireMusic** focuses on music generation, song generation, and audio generation.
-- A unified framework for music, song, and audio generation. Controllable with text prompts, music genres, music structures, etc.
-- Support music generation tasks with high audio quality, with available the sampling rates of 24kHz, 48kHz. 
-- Support long-form audio generation.
-- Convenient fine-tuning and inference. Support mixed precision training (e.g., BF16, FP16, FP32). Provide convenient fine-tuning and inference scripts, allowing users to easily fine-tune and experience their music generation models.
+- A unified framework designed for music, song, and audio generation. Controllable with text prompts, music genres, music structures, etc.
+- Currently, support music generation tasks with high audio quality. 
+- Support long-form music generation.
+- Convenient fine-tuning and inference. Support mixed precision training (e.g., BF16, FP16, FP32). Provide convenient fine-tuning and inference scripts, allowing users to easily fine-tune and infer models.
 
 <a name="whats-new"></a>
-## What's New 🔥
-- 2025/03: InspireMusic [Technical Report](http://arxiv.org/abs/2503.00084) is available.
-- 2025/02: Online demo is available on [ModelScope Space](https://modelscope.cn/studios/iic/InspireMusic/summary) and [HuggingFace Space](https://huggingface.co/spaces/FunAudioLLM/InspireMusic).
+## What's New 
+- 2025/03: InspireMusic [Technical Report](http://arxiv.org/abs/2503.00084) is released on arXiv.
+- 2025/02: Online demos can be found on [ModelScope Space](https://modelscope.cn/studios/iic/InspireMusic/summary) and [HuggingFace Space](https://huggingface.co/spaces/FunAudioLLM/InspireMusic).
 - 2025/01: Open-source [InspireMusic-Base](https://modelscope.cn/models/iic/InspireMusic/summary), [InspireMusic-Base-24kHz](https://modelscope.cn/models/iic/InspireMusic-Base-24kHz/summary), [InspireMusic-1.5B](https://modelscope.cn/models/iic/InspireMusic-1.5B/summary), [InspireMusic-1.5B-24kHz](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/summary), [InspireMusic-1.5B-Long](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/summary) models for music generation. Models are available on both ModelScope and HuggingFace. 
-- 2024/12: Support to generate 48kHz audio with super resolution flow matching.
-- 2024/11: Welcome to preview 👉🏻 [**InspireMusic Demos**](https://funaudiollm.github.io/inspiremusic) 👈🏻. We're excited to share this with you and are working hard to bring even more features and models soon. Your support and feedback mean a lot to us!
-- 2024/11: We are thrilled to announce the open-sourcing of the **InspireMusic** [code repository](https://github.com/FunAudioLLM/InspireMusic) and [demos](https://funaudiollm.github.io/inspiremusic). **InspireMusic** is a unified framework for music, song, and audio generation, featuring capabilities such as text-to-music generation, music continuation and so on. InspireMusic shows comparative performance on music generation with currently top-tier open-sourced models.
+- 2024/12: Support to generate 48kHz music with super resolution flow matching model.
+- 2024/11: Demos preview in [**InspireMusic Demos**](https://funaudiollm.github.io/inspiremusic). We're excited to share this with you and will bring more features, tasks and models soon. Your support and feedback mean a lot to us!
+- 2024/11: We are glad to open-source the **InspireMusic** [code repository](https://github.com/FunAudioLLM/InspireMusic) and [demos](https://funaudiollm.github.io/inspiremusic). **InspireMusic** is a unified framework designed for music, song, and audio generation, featuring capabilities such as text-to-music generation, music continuation and so on. InspireMusic shows comparative performance on music generation with currently top-tier open-sourced models.
 
 <a name="introduction"></a>
 ## Introduction
@@ -167,11 +167,11 @@ python -m inspiremusic.cli.inference --task text-to-music -g 0 -t "Experience so
 
 Alternatively, you can run the inference with just a few lines of Python code.
 ```python
-from inspiremusic.cli.inference import InspireMusicUnified
-from inspiremusic.cli.inference import set_env_variables
+from inspiremusic.cli.inference import InspireMusic
+from inspiremusic.cli.inference import env_variables
 if __name__ == "__main__":
-  set_env_variables()
-  model = InspireMusicUnified(model_name = "InspireMusic-1.5B-Long")
+  env_variables()
+  model = InspireMusic(model_name = "InspireMusic-Base")
   model.inference("text-to-music", "Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance.")
 ```
 
@@ -187,11 +187,11 @@ python -m inspiremusic.cli.inference --task continuation -g 0 -a audio_prompt.wa
 
 Alternatively, you can run the inference with just a few lines of Python code.
 ```python
-from inspiremusic.cli.inference import InspireMusicUnified
-from inspiremusic.cli.inference import set_env_variables
+from inspiremusic.cli.inference import InspireMusic
+from inspiremusic.cli.inference import env_variables
 if __name__ == "__main__":
-  set_env_variables()
-  model = InspireMusicUnified(model_name = "InspireMusic-1.5B-Long")
+  env_variables()
+  model = InspireMusic(model_name = "InspireMusic-Base")
   # just use audio prompt
   model.inference("continuation", None, "audio_prompt.wav")
   # use both text prompt and audio prompt
@@ -200,29 +200,29 @@ if __name__ == "__main__":
 <a name="model-zoo"></a>
 ## Models
 ### Download Models
-We strongly recommend that you download our pretrained InspireMusic models, especially InspireMusic-1.5B-Long for music generation.
+You may download our pretrained InspireMusic models for music generation.
 ```shell
 # use git to download models，please make sure git lfs is installed.
 mkdir -p pretrained_models
-git clone https://www.modelscope.cn/iic/InspireMusic-1.5B-Long.git pretrained_models/InspireMusic
+git clone https://www.modelscope.cn/iic/InspireMusic.git pretrained_models/InspireMusic
 ```
 
 ### Available Models
 Currently, we open source the music generation models support 24KHz mono and 48KHz stereo audio. 
 The table below presents the links to the ModelScope and Huggingface model hub. More models will be available soon.
 
-| Model name                           | Model Links                                                                                                                                                                                                                                                                                                                                   | Remarks                                                                                            |
-|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| InspireMusic-Base-24kHz              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-Base-24kHz/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-Base-24kHz)                                                                        | Pre-trained Music Generation Model, 24kHz mono, 30s                                                |
-| InspireMusic-Base                    | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-Base)                                                                                         | Pre-trained Music Generation Model, 48kHz, 30s                                                     |
-| InspireMusic-1.5B-24kHz              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-24kHz)                                                                        | Pre-trained Music Generation 1.5B Model, 24kHz mono, 30s                                           |
-| InspireMusic-1.5B                    | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B)                                                                                    | Pre-trained Music Generation 1.5B Model, 48kHz, 30s                                                |
-| **InspireMusic-1.5B-Long**               | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long)                                                                          | Pre-trained Music Generation 1.5B Model, 48kHz, support long-form music generation more than 5mins |
-| InspireSong-1.5B                     | [![model](https://img.shields.io/badge/ModelScope-Model-lightgrey.svg)]() [![model](https://img.shields.io/badge/HuggingFace-Model-lightgrey.svg)]()                                                                                                                                                                                          | Pre-trained Song Generation 1.5B Model, 48kHz stereo                                               |
-| InspireAudio-1.5B                    | [![model](https://img.shields.io/badge/ModelScope-Model-lightgrey.svg)]() [![model](https://img.shields.io/badge/HuggingFace-Model-lightgrey.svg)]()                                                                                                                                                                                          | Pre-trained Audio Generation 1.5B Model, 48kHz stereo                                              |
-| Wavtokenizer[<sup>[1]</sup>](https://openreview.net/forum?id=yBlVlS2Fd9) (75Hz) | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/file/view/master?fileName=wavtokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long/tree/main/wavtokenizer)       | An extreme low bitrate audio tokenizer for music with one codebook at 24kHz audio.                 |
-| Music_tokenizer (75Hz)               | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/file/view/master?fileName=music_tokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-24kHz/tree/main/music_tokenizer) | A music tokenizer based on HifiCodec<sup>[3]</sup> at 24kHz audio.                                 |
-| Music_tokenizer (150Hz)              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/file/view/master?fileName=music_tokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long/tree/main/music_tokenizer) | A music tokenizer based on HifiCodec<sup>[3]</sup> at 48kHz audio.                                               |
+| Model name                           | Model Links                                                                                                                                                                                                                                                                                                                                   | Remarks                                                                                                  |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| InspireMusic-Base-24kHz              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-Base-24kHz/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-Base-24kHz)                                                                        | Pre-trained Music Generation Model, 24kHz mono, 30s                                                      |
+| InspireMusic-Base                    | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-Base)                                                                                         | Pre-trained Music Generation Model, 48kHz, 30s                                                           |
+| InspireMusic-1.5B-24kHz              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-24kHz)                                                                        | Pre-trained Music Generation 1.5B Model, 24kHz mono, 30s                                                 |
+| InspireMusic-1.5B                    | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B)                                                                                    | Pre-trained Music Generation 1.5B Model, 48kHz, 30s                                                      |
+| InspireMusic-1.5B-Long               | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/summary) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long)                                                                          | Pre-trained Music Generation 1.5B Model, 48kHz, support long-form music generation up to several minutes |
+| InspireSong-1.5B                     | [![model](https://img.shields.io/badge/ModelScope-Model-lightgrey.svg)]() [![model](https://img.shields.io/badge/HuggingFace-Model-lightgrey.svg)]()                                                                                                                                                                                          | Pre-trained Song Generation 1.5B Model, 48kHz stereo                                                     |
+| InspireAudio-1.5B                    | [![model](https://img.shields.io/badge/ModelScope-Model-lightgrey.svg)]() [![model](https://img.shields.io/badge/HuggingFace-Model-lightgrey.svg)]()                                                                                                                                                                                          | Pre-trained Audio Generation 1.5B Model, 48kHz stereo                                                    |
+| Wavtokenizer[<sup>[1]</sup>](https://openreview.net/forum?id=yBlVlS2Fd9) (75Hz) | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/file/view/master?fileName=wavtokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long/tree/main/wavtokenizer)       | An extreme low bitrate audio tokenizer for music with one codebook at 24kHz audio.                       |
+| Music_tokenizer (75Hz)               | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/file/view/master?fileName=music_tokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-24kHz/tree/main/music_tokenizer) | A music tokenizer based on HifiCodec<sup>[3]</sup> at 24kHz audio.                                       |
+| Music_tokenizer (150Hz)              | [![model](https://img.shields.io/badge/ModelScope-Model-green.svg)](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/file/view/master?fileName=music_tokenizer%252Fmodel.pt) [![model](https://img.shields.io/badge/HuggingFace-Model-green.svg)](https://huggingface.co/FunAudioLLM/InspireMusic-1.5B-Long/tree/main/music_tokenizer) | A music tokenizer based on HifiCodec<sup>[3]</sup> at 48kHz audio.                                       |
 
 Our models have been trained within a limited budget, and there is still significant potential for performance improvement. We are actively working on enhancing the model's performance.
 
@@ -333,11 +333,9 @@ Previous test on H800 GPU, InspireMusic-1.5B-Long could generate 30 seconds audi
     - [x] Technical report v1
     - [x] Provide Dockerfile
 
-- [ ] 2025/04
+- [ ] 2025
     - [ ] Support audio generation task
     - [ ] InspireAudio model for audio generation
-
-- [ ] 2025/06
     - [ ] Support song generation task
     - [ ] InspireSong model for song generation
 
