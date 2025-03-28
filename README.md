@@ -3,13 +3,11 @@
 <p align="center">
  <a href="https://funaudiollm.github.io/inspiremusic" target="_blank"><img alt="Demo" src="https://img.shields.io/badge/Demo-InspireMusic?labelColor=%20%23FDB062&label=InspireMusic&color=%20%23f79009"></a>
 <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"><img alt="Code" src="https://img.shields.io/badge/Code-InspireMusic?labelColor=%20%237372EB&label=InspireMusic&color=%20%235462eb"></a>
-<a href="https://modelscope.cn/models/iic/InspireMusic-1.5B-Long" target="_blank"><img alt="Model" src="https://img.shields.io/badge/InspireMusic-Model-green"></a>
+<a href="https://modelscope.cn/models/iic/InspireMusic" target="_blank"><img alt="Model" src="https://img.shields.io/badge/InspireMusic-Model-green"></a>
 <a href="https://modelscope.cn/studios/iic/InspireMusic/summary" target="_blank"><img alt="Space" src="https://img.shields.io/badge/Spaces-ModelScope-pink?labelColor=%20%237b8afb&label=Spaces&color=%20%230a5af8"></a>
 <a href="https://huggingface.co/spaces/FunAudioLLM/InspireMusic" target="_blank"><img alt="Space" src="https://img.shields.io/badge/HuggingFace-Spaces?labelColor=%20%239b8afb&label=Spaces&color=%20%237a5af8"></a>
 <a href="http://arxiv.org/abs/2503.00084" target="_blank"><img alt="Paper" src="https://img.shields.io/badge/arXiv-Paper-green"></a>
 </p>
-
-InspireMusic is a fundamental AIGC toolkit and models designed for music, song, and audio generation. 
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/FunAudioLLM/InspireMusic) Please support our community by starring it 感谢大家支持
 
@@ -198,7 +196,7 @@ git clone https://www.modelscope.cn/iic/InspireMusic.git pretrained_models/Inspi
 
 ### Available Models
 Currently, we open source the music generation models support 24KHz mono and 48KHz stereo audio. 
-The table below presents the links to the ModelScope and Huggingface model hub. More models will be available soon.
+The table below presents the links to the ModelScope and Huggingface model hub.
 
 | Model name                           | Model Links                                                                                                                                                                                                                                                                                                                                   | Remarks                                                                                                  |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
@@ -215,7 +213,7 @@ The table below presents the links to the ModelScope and Huggingface model hub. 
 
 <a name="tutorial"></a>
 ## Basic Usage
-At the moment, InspireMusic contains the training and inference codes for [music generation](https://github.com/FunAudioLLM/InspireMusic/tree/main/examples/music_generation). More tasks such as song generation, audio generation will be supported in the future.
+At the moment, InspireMusic contains the training and inference codes for [music generation](https://github.com/FunAudioLLM/InspireMusic/tree/main/examples/music_generation). 
 
 ### Training
 Here is an example to train LLM model, support BF16/FP16 training. 
@@ -345,13 +343,13 @@ Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with rea
 </tr></table></p>
 
 ## Acknowledgement
-1. codes from [CosyVoice<sup>[4]</sup>](https://github.com/FunAudioLLM/CosyVoice).
-3. codes from [WavTokenizer<sup>[1]</sup>](https://github.com/jishengpeng/WavTokenizer).
-4. codes from [AcademiCodec<sup>[3]</sup>](https://github.com/yangdongchao/AcademiCodec).
-5. codes from [FunASR](https://github.com/modelscope/FunASR).
-6. codes from [FunCodec](https://github.com/modelscope/FunCodec).
-7. codes from [Matcha-TTS](https://github.com/shivammehta25/Matcha-TTS).
-9. codes from [WeNet](https://github.com/wenet-e2e/wenet).
+1. codes from CosyVoice.
+3. codes from WavTokenizer.
+4. codes from AcademiCodec.
+5. codes from FunASR.
+6. codes from FunCodec.
+7. codes from Matcha-TTS.
+9. codes from WeNet.
 
 ## Disclaimer
 The content provided above is for research purposes only and is intended to demonstrate technical capabilities. Some examples are sourced from the internet. If any content infringes on your rights, please contact us to request its removal.
