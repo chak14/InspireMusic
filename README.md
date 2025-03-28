@@ -317,8 +317,8 @@ for task in 'text-to-music' 'continuation'; do
 done
 ```
 
-### Hardware & Execution Time
-Previous test on H800 GPU, InspireMusic-1.5B-Long could generate 30 seconds audio with real-time factor (RTF) around 1.6~1.8. For normal mode, we recommend using hardware with at least 24GB of GPU memory for better experience. For fast mode, 12GB GPU memory is enough. If you want to generate longer audio, you may increase the `--max_generate_audio_seconds` inference parameter with larger GPU memory. Support inference on Linux/Unix, macOS, Windows systems. 
+### Hardware requirements
+Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with real-time factor (RTF) around 1.6~1.8. For normal mode, we recommend using hardware with at least 24GB of GPU memory for better experience. For fast mode, 12GB GPU memory is enough.
 
 ## Roadmap
 - [x] 2024/12
@@ -330,23 +330,12 @@ Previous test on H800 GPU, InspireMusic-1.5B-Long could generate 30 seconds audi
     - [x] 75Hz InspireMusic-1.5B-Long model for long-form music generation
 
 - [x] 2025/02
-    - [x] Technical report v1
-    - [x] Provide Dockerfile
+    - [x] Release technical report
 
-- [ ] 2025
-    - [ ] Support audio generation task
+- [ ] Future work
     - [ ] InspireAudio model for audio generation
-    - [ ] Support song generation task
     - [ ] InspireSong model for song generation
-
-- [ ] TBD
-    - [ ] Diverse sampling strategies
-    - [ ] 25Hz InspireMusic model
-    - [ ] Runtime SDK
-    - [ ] Support streaming inference mode 
-    - [ ] Support more diverse instruction mode, multi-lingual instructions
-    - [ ] InspireSong trained with more multi-lingual data
-    - [ ] More...
+    - [ ] Support multilingual generation
 
 ## Citation
 ```bibtex
@@ -361,18 +350,6 @@ Previous test on H800 GPU, InspireMusic-1.5B-Long could generate 30 seconds audi
 }
 ```
 ---
-### Friend Links
-Checkout some awesome open-source projects from Tongyi Lab, Alibaba Group.
-
-<p align="center">
-<a href="https://github.com/modelscope/ClearerVoice-Studio" target="_blank">
-        <img alt="Demo" src="https://img.shields.io/badge/Repo | Space-ClearVoice?labelColor=&label=ClearVoice&color=green"></a>
-<a href="https://github.com/FunAudioLLM/CosyVoice" target="_blank">
-        <img alt="Demo" src="https://img.shields.io/badge/Repo | Space-CosyVoice?labelColor=&label=CosyVoice&color=green"></a>
-<a href="https://github.com/FunAudioLLM/SenseVoice" target="_blank">
-        <img alt="Demo" src="https://img.shields.io/badge/Repo | Space-SenseVoice?labelColor=&label=SenseVoice&color=green"></a>
-</p>
-
 <a name="contact"></a>
 ## Community & Discussion
 * Welcome to join our DingTalk and WeChat groups to share and discuss algorithms, technology, and user experience feedback. You may scan the following QR codes to join our official chat groups accordingly.
@@ -384,17 +361,14 @@ Checkout some awesome open-source projects from Tongyi Lab, Alibaba Group.
 <td style="text-align:center;"><img alt="Light" src="./asset/QR.jpg" width="80%" /></td>
 </tr></table></p>
 
-* [Github Discussion](https://github.com/FunAudioLLM/InspireMusic/discussions). For sharing feedback and asking questions.
-* [GitHub Issues](https://github.com/FunAudioLLM/InspireMusic/issues). For sharing issues and suggestions using InspireMusic and feature proposals.
-
 ## Acknowledgement
-1. We borrowed a lot of code from [CosyVoice<sup>[4]</sup>](https://github.com/FunAudioLLM/CosyVoice).
-3. We borrowed a lot of code from [WavTokenizer<sup>[1]</sup>](https://github.com/jishengpeng/WavTokenizer).
-4. We borrowed a lot of code from [AcademiCodec<sup>[3]</sup>](https://github.com/yangdongchao/AcademiCodec).
-5. We borrowed a lot of code from [FunASR](https://github.com/modelscope/FunASR).
-6. We borrowed a lot of code from [FunCodec](https://github.com/modelscope/FunCodec).
-7. We borrowed a lot of code from [Matcha-TTS](https://github.com/shivammehta25/Matcha-TTS).
-9. We borrowed a lot of code from [WeNet](https://github.com/wenet-e2e/wenet).
+1. codes from [CosyVoice<sup>[4]</sup>](https://github.com/FunAudioLLM/CosyVoice).
+3. codes from [WavTokenizer<sup>[1]</sup>](https://github.com/jishengpeng/WavTokenizer).
+4. codes from [AcademiCodec<sup>[3]</sup>](https://github.com/yangdongchao/AcademiCodec).
+5. codes from [FunASR](https://github.com/modelscope/FunASR).
+6. codes from [FunCodec](https://github.com/modelscope/FunCodec).
+7. codes from [Matcha-TTS](https://github.com/shivammehta25/Matcha-TTS).
+9. codes from [WeNet](https://github.com/wenet-e2e/wenet).
 
 ## Disclaimer
 The content provided above is for research purposes only and is intended to demonstrate technical capabilities. Some examples are sourced from the internet. If any content infringes on your rights, please contact us to request its removal.
