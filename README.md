@@ -281,9 +281,7 @@ for task in 'text-to-music' 'continuation'; do
       --music_tokenizer $pretrained_model_dir/music_tokenizer \
       --wavtokenizer $pretrained_model_dir/wavtokenizer \
       --result_dir `pwd`/exp/inspiremusic/${task}_test \
-      --chorus verse \
-      --min_generate_audio_seconds 8 \
-      --max_generate_audio_seconds 30 
+      --chorus verse 
 done
 ```
 Here is an example code to run inference with fast mode, i.e., without flow matching model for text-to-music and music continuation tasks.
@@ -300,9 +298,7 @@ for task in 'text-to-music' 'continuation'; do
       --wavtokenizer $pretrained_model_dir/wavtokenizer \
       --result_dir `pwd`/exp/inspiremusic/${task}_test \
       --chorus verse \
-      --fast \
-      --min_generate_audio_seconds 8 \
-      --max_generate_audio_seconds 30 
+      --fast 
 done
 ```
 
