@@ -11,10 +11,9 @@
 
 InspireMusic is a fundamental AIGC toolkit and models designed for music, song, and audio generation. 
 
-![GitHub Repo stars](https://img.shields.io/github/stars/FunAudioLLM/InspireMusic) Please support our community 💖 by starring it 感谢大家加⭐支持🙏 
+![GitHub Repo stars](https://img.shields.io/github/stars/FunAudioLLM/InspireMusic) Please support our community by starring it 感谢大家支持
 
 [**Highlights**](#highlights)
-| [**News**](https://github.com/FunAudioLLM/InspireMusic#whats-new) 
 | [**Introduction**](#introduction)
 | [**Installation**](#installation)
 | [**Quick Start**](#quick-start)
@@ -26,19 +25,9 @@ InspireMusic is a fundamental AIGC toolkit and models designed for music, song, 
 <a name="highlights"></a>
 ## Highlights
 **InspireMusic** focuses on music generation, song generation, and audio generation.
-- A unified framework designed for music, song, and audio generation. Controllable with text prompts, music genres, music structures, etc.
-- Currently, support music generation tasks with high audio quality. 
-- Support long-form music generation.
-- Convenient fine-tuning and inference. Support mixed precision training (e.g., BF16, FP16, FP32). Provide convenient fine-tuning and inference scripts, allowing users to easily fine-tune and infer models.
-
-<a name="whats-new"></a>
-## What's New 
-- 2025/03: InspireMusic [Technical Report](http://arxiv.org/abs/2503.00084) is released on arXiv.
-- 2025/02: Online demos can be found on [ModelScope Space](https://modelscope.cn/studios/iic/InspireMusic/summary) and [HuggingFace Space](https://huggingface.co/spaces/FunAudioLLM/InspireMusic).
-- 2025/01: Open-source [InspireMusic-Base](https://modelscope.cn/models/iic/InspireMusic/summary), [InspireMusic-Base-24kHz](https://modelscope.cn/models/iic/InspireMusic-Base-24kHz/summary), [InspireMusic-1.5B](https://modelscope.cn/models/iic/InspireMusic-1.5B/summary), [InspireMusic-1.5B-24kHz](https://modelscope.cn/models/iic/InspireMusic-1.5B-24kHz/summary), [InspireMusic-1.5B-Long](https://modelscope.cn/models/iic/InspireMusic-1.5B-Long/summary) models for music generation. Models are available on both ModelScope and HuggingFace. 
-- 2024/12: Support to generate 48kHz music with super resolution flow matching model.
-- 2024/11: Demos preview in [**InspireMusic Demos**](https://funaudiollm.github.io/inspiremusic). We're excited to share this with you and will bring more features, tasks and models soon. Your support and feedback mean a lot to us!
-- 2024/11: We are glad to open-source the **InspireMusic** [code repository](https://github.com/FunAudioLLM/InspireMusic) and [demos](https://funaudiollm.github.io/inspiremusic). **InspireMusic** is a unified framework designed for music, song, and audio generation, featuring capabilities such as text-to-music generation, music continuation and so on. InspireMusic shows comparative performance on music generation with currently top-tier open-sourced models.
+- A unified toolkit designed for music, song, and audio generation.
+- Music generation tasks with high audio quality. 
+- Long-form music generation.
 
 <a name="introduction"></a>
 ## Introduction
