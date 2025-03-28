@@ -1,6 +1,6 @@
-<p align="center"> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./asset/logo.png" width="100%"></a></p>
+<p> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./asset/logo.png" width="100%"></a></p>
 
-<p align="center">
+<p>
  <a href="https://funaudiollm.github.io/inspiremusic" target="_blank"><img alt="Demo" src="https://img.shields.io/badge/Demo-InspireMusic?labelColor=%20%23FDB062&label=InspireMusic&color=%20%23f79009"></a>
 <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"><img alt="Code" src="https://img.shields.io/badge/Code-InspireMusic?labelColor=%20%237372EB&label=InspireMusic&color=%20%235462eb"></a>
 <a href="https://modelscope.cn/models/iic/InspireMusic" target="_blank"><img alt="Model" src="https://img.shields.io/badge/InspireMusic-Model-green"></a>
@@ -30,12 +30,12 @@
 <a name="introduction"></a>
 ## Introduction
 > [!Note]
-> This repo contains the algorithm infrastructure and some simple examples. Currently only support English text prompts.
+> This repo contains the algorithm infrastructure and some simple examples.
 
 > [!Tip]
 > To preview the performance, please refer to [InspireMusic Demo Page](https://funaudiollm.github.io/inspiremusic).
 
-InspireMusic is a unified music, song, and audio generation framework through the audio tokenization integrated with autoregressive transformer and flow-matching based model. The original motive of this toolkit is to empower the common users to innovate soundscapes and enhance euphony in research through music, song, and audio crafting. The toolkit provides both training and inference codes for AI-based generative models that create high-quality music. Featuring a unified framework, InspireMusic incorporates audio tokenizers with autoregressive transformer and super-resolution flow-matching modeling, allowing for the controllable generation of music, song, and audio with both text and audio prompts. The toolkit currently supports music generation, will support song generation, audio generation in the future.
+InspireMusic is a toolkit for music, song, and audio generation. It consists of an autoregressive transformer with a flow-matching based model. This toolkit is for users to generate music, song, and audio. InspireMusic can generate high-quality music in long-form with text-to-music and music continuation. InspireMusic incorporates audio tokenizers with autoregressive transformer and flow-matching modeling, allowing for the controllable generation of music, song, and audio with both text and audio prompts. The toolkit currently supports music generation.
 
 ## InspireMusic
 <p align="center"><table><tr><td style="text-align:center;"><img alt="Light" src="asset/InspireMusic.png" width="100%" /></tr><tr><td style="text-align:center;">
