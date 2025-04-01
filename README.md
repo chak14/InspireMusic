@@ -35,11 +35,11 @@
 > [!Tip]
 > To preview the performance, please refer to [InspireMusic Demo Page](https://funaudiollm.github.io/inspiremusic).
 
-InspireMusic is a toolkit for music, song, and audio generation. It consists of an autoregressive transformer with a flow-matching based model. This toolkit is for users to generate music, song, and audio. InspireMusic can generate high-quality music in long-form with text-to-music and music continuation. InspireMusic incorporates audio tokenizers with autoregressive transformer and flow-matching modeling, it helps to generate music, song, and audio with text and music prompts. The toolkit currently supports music generation.
+InspireMusic is a toolkit for music, song, and audio generation. It consists of an autoregressive transformer with a flow-matching based model. This toolkit is for users to generate music, song, and audio. InspireMusic can generate high-quality music in long-form with text-to-music and music continuation. InspireMusic incorporates audio tokenizers with autoregressive transformer and flow-matching modeling to generate music, song, and audio with text and music prompts. The toolkit currently supports music generation.
 
 ## InspireMusic
 <p align="center"><table><tr><td style="text-align:center;"><img alt="Light" src="asset/InspireMusic.png" width="100%" /></tr><tr><td style="text-align:center;">
-Figure 1: An overview of the InspireMusic framework. We introduce InspireMusic, a unified framework for music, song, audio generation capable of producing high-quality long-form audio. InspireMusic consists of the following three key components. <b>Audio Tokenizers</b> convert the raw audio waveform into discrete audio tokens that can be efficiently processed and trained by the autoregressive transformer model. Audio waveform of lower sampling rate has converted to discrete tokens via a high bitrate compression audio tokenizer<a href="https://openreview.net/forum?id=yBlVlS2Fd9" target="_blank"><sup>[1]</sup></a>. <b>Autoregressive Transformer</b> model is based on Qwen2.5<a href="https://arxiv.org/abs/2412.15115" target="_blank"><sup>[2]</sup></a> as the backbone model and is trained using a next-token prediction approach on both text and audio tokens, enabling it to generate coherent and contextually relevant token sequences. The audio and text tokens are the inputs of an autoregressive model with the next token prediction to generate tokens. <b>Super-Resolution Flow-Matching Model</b> based on flow modeling method, maps the generated tokens to latent features with high-resolution fine-grained acoustic details<a href="https://arxiv.org/abs/2305.02765" target="_blank"><sup>[3]</sup></a> obtained from a higher sampling rate of audio to ensure the acoustic information flow connected with high fidelity through models. A vocoder then generates the final audio waveform from these enhanced latent features. InspireMusic supports a range of tasks including text-to-music, music continuation, music reconstruction, and music super-resolution.
+Figure 1: An overview of the InspireMusic. We introduce InspireMusic, a toolkit designed for music, song, audio generation capable of producing high-quality long-form music. InspireMusic consists of the following three key components. Audio Tokenizers convert the raw audio waveform into discrete audio tokens that can be efficiently processed and trained by the autoregressive transformer model. Audio waveform of lower sampling rate has converted to discrete tokens via a high bitrate compression audio tokenizer<a href="https://openreview.net/forum?id=yBlVlS2Fd9" target="_blank"><sup>[1]</sup></a>. Autoregressive Transformer model is based on Qwen2.5<a href="https://arxiv.org/abs/2412.15115" target="_blank"><sup>[2]</sup></a> as the backbone model and is trained using a next-token prediction approach on both text and audio tokens, enabling it to generate coherent and contextually relevant token sequences. The audio and text tokens are the inputs of an autoregressive model with the next token prediction to generate tokens. Super-Resolution Flow-Matching Model based on flow modeling method, maps the generated tokens to latent features with high-resolution fine-grained acoustic details<a href="https://arxiv.org/abs/2305.02765" target="_blank"><sup>[3]</sup></a> obtained from a higher sampling rate of audio to ensure the acoustic information flow connected with high fidelity through models. A vocoder then generates the final audio waveform from these enhanced latent features. InspireMusic supports a range of tasks including text-to-music, music continuation, music reconstruction and super resolution..
 </td></tr></table></p>
 
 <a name="installation"></a>
@@ -56,7 +56,7 @@ cd third_party && git clone https://github.com/shivammehta25/Matcha-TTS.git
 ```
 
 ### Install from Source
-InspireMusic requires Python>=3.8, PyTorch>=2.0.1, flash attention==2.6.2/2.6.3, CUDA>=11.2. You can install the dependencies with the following commands:
+InspireMusic requires Python>=3.8, PyTorch>=2.0.1, flash attention==2.6.2/2.6.3, CUDA>=11.8. You can install the dependencies with the following commands:
 
 - Install Conda: please see https://docs.conda.io/en/latest/miniconda.html
 - Create Conda env:
@@ -140,7 +140,7 @@ sh run.sh
 ### One-line Inference
 #### Text-to-music Task
 One-line Shell script for text-to-music task.
-``` shell
+```shell
 cd examples/music_generation
 # with flow matching, use one-line command to get a quick try
 python -m inspiremusic.cli.inference
@@ -154,11 +154,11 @@ python -m inspiremusic.cli.inference --task text-to-music -g 0 -t "Experience so
 
 Alternatively, you can run the inference with just a few lines of Python code.
 ```python
-from inspiremusic.cli.inference import InspireMusic
+from inspiremusic.cli.inference import InspireMusicModel
 from inspiremusic.cli.inference import env_variables
 if __name__ == "__main__":
   env_variables()
-  model = InspireMusic(model_name = "InspireMusic-Base")
+  model = InspireMusicModel(model_name = "InspireMusic-Base")
   model.inference("text-to-music", "Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance.")
 ```
 
@@ -174,11 +174,11 @@ python -m inspiremusic.cli.inference --task continuation -g 0 -a audio_prompt.wa
 
 Alternatively, you can run the inference with just a few lines of Python code.
 ```python
-from inspiremusic.cli.inference import InspireMusic
+from inspiremusic.cli.inference import InspireMusicModel
 from inspiremusic.cli.inference import env_variables
 if __name__ == "__main__":
   env_variables()
-  model = InspireMusic(model_name = "InspireMusic-Base")
+  model = InspireMusicModel(model_name = "InspireMusic-Base")
   # just use audio prompt
   model.inference("continuation", None, "audio_prompt.wav")
   # use both text prompt and audio prompt

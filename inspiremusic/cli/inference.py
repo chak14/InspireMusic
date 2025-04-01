@@ -34,7 +34,7 @@ def env_variables():
     os.environ['PYTHONPATH'] = python_path
     sys.path.extend([main_root, third_party_matcha_tts_path])
 
-class InspireMusic:
+class InspireMusicModel:
     def __init__(self,
                  model_name: str,
                  model_dir: str = None,
@@ -275,7 +275,7 @@ def get_args():
 def main():
     env_variables()
     args = get_args()
-    model = InspireMusic(model_name = args.model_name,
+    model = InspireMusicModel(model_name = args.model_name,
                  model_dir = args.model_dir,
                  min_generate_audio_seconds = args.min_generate_audio_seconds,
                  max_generate_audio_seconds = args.max_generate_audio_seconds,
