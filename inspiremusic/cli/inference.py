@@ -88,7 +88,7 @@ class InspireMusicModel:
         use_cuda = gpu >= 0 and torch.cuda.is_available()
         if gpu >=0:
             if torch.cuda.is_available():
-                self.device = torch.device(f'cuda:{gpu}')
+                self.device = torch.device('cuda')
             elif torch.backends.mps.is_available():
                 self.device = torch.device('mps')
             elif torch.xpu.is_available():

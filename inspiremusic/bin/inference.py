@@ -87,7 +87,7 @@ def main():
 	use_cuda = args.gpu >= 0 and torch.cuda.is_available()
 	if args.gpu >=0:
 		if torch.cuda.is_available():
-			device = torch.device(f'cuda:{args.gpu}')
+			device = torch.device('cuda')
 		elif torch.backends.mps.is_available():
 			device = torch.device('mps')
 		elif torch.xpu.is_available():
