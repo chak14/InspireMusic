@@ -298,8 +298,8 @@ for task in 'text-to-music' 'continuation'; do
 done
 ```
 
-### Hardware requirements
-Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with real-time factor (RTF) around 1.6~1.8. For normal mode, we recommend using hardware with at least 24GB of GPU memory for better experience. For fast mode, 12GB GPU memory is enough.
+### Hardware Requirements
+Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with real-time factor (RTF) around 1.4~1.8. For normal mode, we recommend using hardware with at least 24GB of GPU memory for better experience. For fast mode, 12GB GPU memory is enough.
 
 ## Roadmap
 - [x] 2024/12

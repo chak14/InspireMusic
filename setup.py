@@ -93,7 +93,7 @@ setup(
     url="https://github.com/FunAudioLLM/InspireMusic.git",
     author="Tongyi Lab, Alibaba Group",
     author_email="chong.zhang@alibaba-inc.com",
-    description="InspireMusic: A Fundamental Music, Song and Audio Generation Framework and Toolkits",
+    description="InspireMusic: A Framework for Music, Audio and Song Generation",
     long_description=open(os.path.join(dirname, "README.md"), encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     license="The MIT License",
