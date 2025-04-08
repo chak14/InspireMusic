@@ -28,7 +28,7 @@ sys.path.append('{}/third_party/Matcha-TTS'.format(ROOT_DIR))
 
 import spaces
 import gradio as gr
-from inspiremusic.cli.inference import InspireMusicUnified, set_env_variables
+from inspiremusic.cli.inference import InspireMusicModel, env_variables
 import torchaudio
 import datetime
 import hashlib
@@ -104,8 +104,8 @@ def trim_audio(audio_file, cut_seconds=5):
 
 @spaces.GPU(duration=120)
 def music_generation(args):
-	set_env_variables()
-	model = InspireMusicUnified(
+	env_variables()
+	model = InspireMusicModel(
 			model_name=args["model_name"],
 			model_dir=args["model_dir"],
 			min_generate_audio_seconds=args["min_generate_audio_seconds"],
