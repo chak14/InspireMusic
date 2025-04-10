@@ -1,10 +1,10 @@
 # Use PyTorch 2.1 GPU base image with Python 3.8 and CUDA 11.8 on Ubuntu 22.04
-FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-devel
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-devel
 
 # metainformation
 LABEL org.opencontainers.image.source = "https://github.com/FunAudioLLM/InspireMusic"
 LABEL org.opencontainers.image.licenses = "Apache License 2.0"
-LABEL org.opencontainers.image.base.name = "docker.io/library/pytorch:2.1-gpu-py38-cu118-ubuntu22.04"
+LABEL org.opencontainers.image.base.name = "docker.io/library/pytorch:2.3-gpu-py310-cu121-ubuntu22.04"
 
 # Set the working directory
 WORKDIR /workspace/InspireMusic
@@ -16,7 +16,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg s
 RUN pip install --no-cache-dir -r requirements.txt
 
 # install flash attention
-RUN pip install flash-attn==2.6.3 --no-build-isolation
+RUN pip install flash-attn --no-build-isolation
 
 # download models
 RUN mkdir -p /workspace/InspireMusic/pretrained_models
