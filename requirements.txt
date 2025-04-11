@@ -39,3 +39,4 @@ einops
 scipy
 accelerate
 peft==0.13.2
+flash-attn==2.7.4.post1
