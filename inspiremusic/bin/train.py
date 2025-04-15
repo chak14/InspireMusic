@@ -24,7 +24,7 @@ import deepspeed
 import glob
 import os
 from hyperpyyaml import load_hyperpyyaml
-from torch.cuda.amp import GradScaler, autocast
+from torch.amp import GradScaler
 from torch.distributed.elastic.multiprocessing.errors import record
 from peft import get_peft_config, get_peft_model, LoraConfig, TaskType
 from inspiremusic.utils.executor import Executor
@@ -172,7 +172,7 @@ def main():
     # Initialize AMP for torch_ddp if fp16 is enabled
     scaler = None
     if args.fp16:
-        scaler = GradScaler()
+        scaler = GradScaler("cuda")
         logging.info("Initialized AMP GradScaler for mixed precision training.")
 
     # Save init checkpoints

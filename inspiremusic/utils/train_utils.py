@@ -208,9 +208,9 @@ def batch_forward(model, batch, info_dict, scaler):
         dtype = torch.float32
 
     if info_dict['train_engine'] == 'torch_ddp':
-        autocast = torch.cuda.amp.autocast(enabled=scaler is not None)
+        autocast = torch.autocast("cuda", enabled=scaler is not None)
     else:
-        autocast = torch.cuda.amp.autocast(enabled=True, dtype=dtype, cache_enabled=False)
+        autocast = torch.autocast("cuda", enabled=True, dtype=dtype, cache_enabled=False)
 
     with autocast:
         info_dict['loss_dict'] = model(batch, device)
