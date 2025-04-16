@@ -1,5 +1,5 @@
 # Use PyTorch 2.6 GPU base image with Python 3.11 and CUDA 12.1/12.4 on Ubuntu 22.04
-FROM pytorch/pytorch:2.6.0-cuda12.1-cudnn8-runtime
+FROM pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
