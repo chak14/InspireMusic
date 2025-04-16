@@ -172,7 +172,7 @@ def main():
     # Initialize AMP for torch_ddp if fp16 is enabled
     scaler = None
     if args.fp16:
-        scaler = GradScaler("cuda")
+        scaler = GradScaler()
         logging.info("Initialized AMP GradScaler for mixed precision training.")
 
     # Save init checkpoints

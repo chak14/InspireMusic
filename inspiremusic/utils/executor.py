@@ -21,7 +21,7 @@ import torch
 import torch.distributed as dist
 
 from inspiremusic.utils.train_utils import update_parameter_and_lr, log_per_step, log_per_save, batch_forward, batch_backward, save_model, inspiremusic_join
-from torch import autocast
+from torch.amp import autocast
 
 class Executor:
     def __init__(self):
@@ -70,7 +70,7 @@ class Executor:
                     context = nullcontext
 
                 with context():
-                    with autocast("cuda", enabled=scaler is not None):
+                    with autocast(device_type='cuda', enabled=scaler is not None):
                         info_dict = batch_forward(model, batch_dict, info_dict, scaler)
                         info_dict = batch_backward(model, info_dict, scaler)
 
@@ -110,7 +110,7 @@ class Executor:
                 else:
                     stop -= 1
                 
-            with autocast("cuda", enabled=scaler is not None):
+            with autocast(device_type='cuda', enabled=scaler is not None):
                 info_dict = batch_forward(model, batch_dict, info_dict, scaler)
 
             for k, v in info_dict['loss_dict'].items():

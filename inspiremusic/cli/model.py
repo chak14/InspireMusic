@@ -20,7 +20,7 @@ from contextlib import nullcontext
 import uuid
 from inspiremusic.music_tokenizer.vqvae import VQVAE
 from inspiremusic.wavtokenizer.decoder.pretrained import WavTokenizer
-from torch import autocast
+from torch.amp import autocast
 import logging
 import torch
 
@@ -122,7 +122,7 @@ class InspireMusicModel:
     def llm_job(self, text, audio_token, audio_token_len, prompt_text, llm_prompt_audio_token, embeddings, uuid, duration_to_gen, task):
         with self.llm_context:
             local_res = []
-            with autocast("cuda", enabled=self.fp16, dtype=self.dtype, cache_enabled=True):
+            with autocast(device_type='cuda', enabled=self.fp16, dtype=self.dtype, cache_enabled=True):
                 inference_kwargs = {
                     'text': text.to(self.device),
                     'text_len': torch.tensor([text.shape[1]], dtype=torch.int32).to(self.device),
