@@ -38,11 +38,11 @@ case "$OS" in
   Linux*|Darwin*)
     echo "Running on Unix-like OS: $OS"
     # Use Unix-style paths
-    # inference normal mode
+    # batch inference normal mode
     for task in 'text-to-music' 'continuation'; do
       python inspiremusic/bin/inference.py --task $task \
           --gpu 0 \
-          --config conf/inspiremusic_1.5b_long.yaml \
+          --config conf/inspiremusic_1.5b_long_infer.yaml \
           --prompt_data data/${dataset_name}/parquet/data.list \
           --flow_model $pretrained_model_dir/flow.pt \
           --llm_model $pretrained_model_dir/llm.pt \
@@ -51,7 +51,8 @@ case "$OS" in
           --chorus default \
           --output_sample_rate 48000 \
           --min_generate_audio_seconds 5.0 \
-          --max_generate_audio_seconds 180.0 \
+          --max_generate_audio_seconds 30.0 \
+          --batch \
           --result_dir `pwd`/exp/${model_name}/${task}_${expr_name}
     #   if use InspireMusic-xxxx-24kHz model, please set output sample rate to 24kHz
     #      --output_sample_rate 24000 \
@@ -64,11 +65,11 @@ case "$OS" in
     echo "Running on Windows-like OS: $OS"
     # Use Windows-style paths
     pretrained_model_dir=$(convert_path "$pretrained_model_dir")
-    # inference normal mode
+    # batch inference normal mode
     for task in 'text-to-music' 'continuation'; do
       python inspiremusic\bin\inference.py --task $task \
           --gpu 0 \
-          --config conf\inspiremusic_1.5b_long.yaml \
+          --config conf\inspiremusic_1.5b_long_infer.yaml \
           --prompt_data data\${dataset_name}\parquet\data.list \
           --flow_model $pretrained_model_dir\flow.pt \
           --llm_model $pretrained_model_dir\llm.pt \
@@ -77,7 +78,8 @@ case "$OS" in
           --chorus default \
           --output_sample_rate 48000 \
           --min_generate_audio_seconds 5.0 \
-          --max_generate_audio_seconds 180.0 \
+          --max_generate_audio_seconds 30.0 \
+          --batch \
           --result_dir exp\${model_name}\${task}_${expr_name}
     #   if use InspireMusic-xxxx-24kHz model, please set output sample rate to 24kHz
     #      --output_sample_rate 24000 \

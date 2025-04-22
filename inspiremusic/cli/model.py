@@ -305,3 +305,39 @@ class InspireMusicModel:
 
             yield {'music_audio': this_music_audio.cpu()}
             torch.cuda.synchronize()
+    def batch_inference(self, text, audio_token, audio_token_len, text_token, text_token_len, embeddings=None,
+                  prompt_text=torch.zeros(1, 0, dtype=torch.int32),
+                  llm_prompt_audio_token=torch.zeros(1, 0, dtype=torch.int32),
+                  flow_prompt_audio_token=torch.zeros(1, 0, dtype=torch.int32),
+                  prompt_audio_feat=torch.zeros(1, 0, 80), sample_rate=48000, duration_to_gen = 30, task="continuation", trim = True, stream=False, **kwargs):
+        batch_size = text_token.shape[0]
+        inference_kwargs = {
+                    'text': text_token,
+                    'text_len': torch.tensor(text_token_len, dtype=torch.int32).to(self.device),
+                    'audio_token': audio_token,
+                    'audio_token_len': torch.tensor(audio_token_len, dtype=torch.int32).to(self.device),
+                    'prompt_text': torch.zeros(batch_size, 0, dtype=torch.int32).to(self.device),
+                    'prompt_text_len': torch.tensor(prompt_text.shape[1], dtype=torch.int32).to(self.device),
+                    'prompt_audio_token': torch.zeros(batch_size, 0, dtype=torch.int32).to(self.device),
+                    'prompt_audio_token_len': torch.tensor([llm_prompt_audio_token.shape[1]], dtype=torch.int32).to(self.device),
+                    'embeddings': embeddings,
+                    'duration_to_gen': duration_to_gen,
+                    'task': task
+                    }
+        music_audios = []
+        with autocast(device_type='cuda', enabled=self.fp16, dtype=self.dtype, cache_enabled=True):
+            data = self.llm.batch_inference(**inference_kwargs)
+            for i in range(data.shape[0]):
+                this_uuid = str(uuid.uuid1())
+                this_music_token = data[i][data[i]!=0].unsqueeze(0)
+                if self.fast:
+                    this_music_audio = self.semantictoken2wav(token=this_music_token)
+                else:
+                    music_audio = self.token2wav(token=this_music_token,
+                                                token_len=torch.tensor([data[i][data[i]!=0].shape[0]]),
+                                                uuid=this_uuid,
+                                                sample_rate=sample_rate,
+                                                finalize=False)
+                music_audios.append({"music_audio":music_audio, "text":text[i]})
+
+        return music_audios

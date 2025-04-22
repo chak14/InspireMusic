@@ -167,6 +167,25 @@ class LLM(torch.nn.Module):
         lm_input = pad_sequence(lm_input, batch_first=True, padding_value=IGNORE_ID)
         return lm_input, lm_input_len
 
+    def pad_unpad_sequence_batch(self, sos_eos_emb, embeddings, text_token, text_token_len, task_id_emb, audio_token, audio_token_len, seg_len):
+        text_token = unpad_sequence(text_token, text_token_len.cpu(), batch_first=True)
+        if audio_token_len is not None:
+            audio_token = unpad_sequence(audio_token, audio_token_len.cpu(), batch_first=True)
+
+        if isinstance(embeddings, torch.Tensor):
+            embeddings = unpad_sequence(embeddings, seg_len.cpu(), batch_first=True)
+        else:
+            for i in range(len(embeddings)):
+                embeddings[i] = unpad_sequence(embeddings[i], seg_len.cpu(), batch_first=True)
+
+        if audio_token_len is not None:
+            lm_input = [torch.concat([sos_eos_emb.squeeze(dim=0)] + [embedding[i] for embedding in embeddings] + [text_token[i], task_id_emb.squeeze(dim=0), audio_token[i]], dim=0) for i in range(len(text_token))]
+        else:
+            lm_input = [torch.concat([sos_eos_emb.squeeze(dim=0)] + [embedding[i] for embedding in embeddings] + [text_token[i], task_id_emb.squeeze(dim=0)], dim=0) for i in range(len(text_token))]
+        lm_input_len = torch.tensor([i.size(0) for i in lm_input], dtype=torch.int32)
+        lm_input = pad_sequence(lm_input, batch_first=True, padding_value=IGNORE_ID)
+        return lm_input, lm_input_len
+
     def forward(
             self,
             batch: dict,
@@ -365,3 +384,140 @@ class LLM(torch.nn.Module):
             lm_input = self.speech_embedding.weight[top_ids].reshape(1, 1, -1)
             if infer_cfg:
                 lm_input = lm_input.repeat(2, 1, 1)
+
+    @torch.inference_mode()
+    def batch_inference(
+            self,
+            text: torch.Tensor,
+            text_len: torch.Tensor,
+            audio_token: torch.Tensor,
+            audio_token_len: torch.Tensor,
+            prompt_text: torch.Tensor,
+            prompt_text_len: torch.Tensor,
+            prompt_audio_token: torch.Tensor,
+            prompt_audio_token_len: torch.Tensor,
+            embeddings: List,
+            duration_to_gen: float = 300,
+            task: str = "continuation",
+            token_rate: int = 75,
+            limit_audio_prompt_len: int = 5,
+    ) -> Generator[torch.Tensor, None, None]:
+        device = text.device
+        if text is not None:
+            text = torch.concat([prompt_text, text], dim=1)
+            text_len += prompt_text_len
+            infer_cfg = self.infer_cfg_ratio >= 0.0
+            if infer_cfg:
+                text_cfg = self.text_embedding(text.new_zeros(text.shape))
+            text = self.text_embedding(text)
+            # 1. encode text
+            text_token, text_token_len = self.encode(text, text_len)
+            batch_size = text_token.shape[0]
+        else:
+            batch_size = audio_token.shape[0]
+
+        # 2. encode embedding
+        if embeddings is not None:
+            time_start, time_end, chorus = embeddings
+
+            if len(chorus.shape) == 1:
+                time_start_embed = self.time_embedding(time_start).reshape(1, 1, -1)
+                time_end_embed = self.time_embedding(time_end).reshape(1, 1, -1)
+                chorus_embed = self.chorus_embedding(chorus).reshape(1, 1, -1)
+            else:
+                time_start_embed = self.time_embedding(time_start.view(-1)).reshape(batch_size, chorus.size(1), -1)
+                time_end_embed = self.time_embedding(time_end.view(-1)).reshape(batch_size, chorus.size(1), -1)
+                chorus_embed = self.chorus_embedding(chorus)
+
+        time_mask = time_start != -1.0
+        seg_len = time_mask.sum(-1)
+
+        # 3. concat llm_input
+        sos_eos_emb = self.llm_embedding.weight[self.sos_eos].reshape(1, 1, -1)
+        task_id_emb = self.llm_embedding.weight[self.task_id].reshape(1, 1, -1)
+
+        if audio_token_len is not None:
+            audio_token = audio_token[:,:(limit_audio_prompt_len*token_rate)]
+            audio_token_emb = self.speech_embedding(audio_token)
+        else:
+            audio_token_emb = torch.zeros(batch_size, 0, self.llm_input_size, dtype=text.dtype).to(device)
+
+        if task == "continuation":
+            lm_input, lm_input_len = self.pad_unpad_sequence_batch(sos_eos_emb, [time_start_embed,time_end_embed,chorus_embed], text_token, text_token_len, task_id_emb, audio_token_emb, audio_token_len, seg_len)
+        else:
+            lm_input, lm_input_len = self.pad_unpad_sequence_batch(sos_eos_emb, [time_start_embed,time_end_embed,chorus_embed], text_token, text_token_len, task_id_emb, None, None,seg_len)
+        min_text_len = lm_input_len.min()
+
+        if infer_cfg:
+            if task == "continuation":
+                lm_cf_input,lm_cf_input_len = self.pad_unpad_sequence_batch(sos_eos_emb, [torch.rand_like(time_start_embed), torch.rand_like(time_end_embed), torch.rand_like(chorus_embed)], text_cfg, text_token_len,
+                                                 task_id_emb, audio_token_emb, audio_token_len, seg_len)
+            else:
+                lm_cf_input,lm_cf_input_len = self.pad_unpad_sequence_batch(sos_eos_emb, [torch.rand_like(time_start_embed), torch.rand_like(time_end_embed), torch.rand_like(chorus_embed)], text_cfg, text_token_len,
+                                                 task_id_emb, None, None,seg_len)
+            lm_input = torch.cat([lm_input,lm_cf_input],0)
+            lm_input_len = torch.cat([lm_input_len,lm_cf_input_len],0)
+
+        lm_input_len = lm_input_len.to(lm_input.device)
+        lm_input_orig = lm_input
+        lm_input = lm_input[:,:min_text_len]
+        # 4. cal min/max_length
+        min_len = int(duration_to_gen * token_rate)
+        max_len = int(duration_to_gen * token_rate + lm_input_orig.size(1) - min_text_len)
+        logging.info(f"LLM generation sequence length: {max_len}, generate audio length {duration_to_gen}s.")
+
+        # 5. step by step decode
+        out_tokens = []
+        offset = 0
+        state = None
+        cfg_state = None
+
+        stop_mask = [False for _ in range(batch_size)]
+
+        for i in range(max_len):
+            y_pred,_, state = self.llm.forward_one_step(lm_input,torch.ones(lm_input.shape[0], lm_input.shape[1],
+                                                                         device=lm_input.device).to(torch.bool),cache=state)
+
+            logits = self.llm_decoder(y_pred[:, -1])
+            if infer_cfg:
+                logits_cf = logits[batch_size:]
+                logits_cond = logits = logits[:batch_size]
+
+                infer_cfg_ratio = self.infer_cfg_ratio
+
+                logits = infer_cfg_ratio  * logits + (1 - infer_cfg_ratio ) *  logits_cf
+
+            logp = logits.log_softmax(dim=-1)
+            if i < min_len:
+                logp[:,self.audio_token_size] = float("-inf")
+            top_ids = []
+            for j in range(batch_size):
+                if stop_mask[j] or i + min_text_len < lm_input_len[j]:
+                    _top_id = torch.LongTensor([0]).to(logp.device)
+                else:
+                    if len(out_tokens)>0:
+                        _top_id = self.sampling_ids(logp[j], out_tokens[j], ignore_eos= i < min_len)
+                    else:
+                        _top_id = self.sampling_ids(logp[j], [], ignore_eos= i < min_len)
+
+                if _top_id == self.audio_token_size:
+
+                    stop_mask[j] = True
+                    _top_id = torch.LongTensor([0]).to(logp.device)
+                top_ids.append(_top_id)
+            if all(stop_mask):
+                return out_tokens
+            top_ids = torch.cat(top_ids,0)
+            top_ids_embed = self.speech_embedding.weight[top_ids][:,None,:].repeat(2,1,1)
+
+            if i + min_text_len >= lm_input_orig.size(1):
+                lm_input = top_ids_embed
+            else:
+                lm_input = torch.where((lm_input_len>=min_text_len + i)[:,None], lm_input_orig[:,min_text_len + i],top_ids_embed.squeeze(1))[:,None]
+
+            if len(out_tokens)>0:
+                out_tokens = torch.cat([out_tokens,top_ids[:,None]],1)
+            else:
+                out_tokens = top_ids[:,None]
+
+        return out_tokens
