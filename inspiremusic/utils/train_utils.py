@@ -36,6 +36,13 @@ from deepspeed.runtime.zero.stage_1_and_2 import estimate_zero2_model_states_mem
 from inspiremusic.dataset.dataset import Dataset
 from inspiremusic.utils.scheduler import WarmupLR, NoamHoldAnnealing, ConstantLR
 
+try:
+    from torch.amp import autocast
+except ImportError:
+    try:
+        from torch.cuda.amp import autocast
+    except ImportError:
+        raise
 
 def init_distributed(args):
     world_size = int(os.environ.get('WORLD_SIZE', 1))
@@ -184,7 +191,7 @@ def inspiremusic_join(group_join, info_dict):
         # we try to join all rank in both ddp and deepspeed mode, in case different rank has different lr
         try:
             dist.monitored_barrier(group=group_join,
-                                   timeout=group_join.options._timeout)
+                                   timeout=info_dict["timeout"])
             return False
         except RuntimeError as e:
             logging.info("Detected uneven workload distribution: {}\n".format(e) +
@@ -208,14 +215,17 @@ def batch_forward(model, batch, info_dict, scaler):
         dtype = torch.float32
 
     if info_dict['train_engine'] == 'torch_ddp':
-        autocast = torch.amp.autocast(device_type='cuda', enabled=scaler is not None)
+        try:
+            with autocast("cuda"):
+                info_dict['loss_dict'] = model(batch, device)
+        except RuntimeError as e:
+            with autocast(enabled=scaler is not None):
+                info_dict['loss_dict'] = model(batch, device)
     else:
-        autocast = torch.amp.autocast(device_type='cuda', enabled=True, dtype=dtype, cache_enabled=False)
+        with autocast(device_type='cuda', enabled=True, dtype=dtype, cache_enabled=False):
+            info_dict['loss_dict'] = model(batch, device)
 
-    with autocast:
-        info_dict['loss_dict'] = model(batch, device)
     return info_dict
-
 
 def batch_backward(model, info_dict, scaler):
     if info_dict["train_engine"] == "deepspeed":

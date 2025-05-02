@@ -180,13 +180,13 @@ def main():
 
     # Get executor
     executor = Executor()
-
+    info_dict["timeout"] = datetime.timedelta(seconds=args.timeout)
     # Start training loop
     for epoch in range(info_dict['max_epoch']):
         executor.epoch = epoch
         train_dataset.set_epoch(epoch)
         dist.barrier()
-        group_join = dist.new_group(backend="gloo", timeout=datetime.timedelta(seconds=args.timeout))
+        group_join = dist.new_group(backend="gloo", timeout=info_dict["timeout"])
         executor.train_one_epoch(model, optimizer, scheduler, train_data_loader, cv_data_loader, writer, info_dict, group_join, scaler=scaler)
         dist.destroy_process_group(group_join)
 
