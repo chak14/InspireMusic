@@ -336,7 +336,7 @@ Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with rea
 * Welcome to join our DingTalk and WeChat groups to share and discuss algorithms, technology, and user experience feedback. You may scan the following QR codes to join our official chat groups accordingly.
 
 <p align="center"><table><tr>
-<td style="text-align:center;"><a href="./asset/QR.jpg"><img alt="FunAudioLLM in DingTalk" src="https://img.shields.io/badge/FunAudioLLM-DingTalk-green"></a></td>
+<td style="text-align:center;"><a href="./asset/dingding.png"><img alt="FunAudioLLM in DingTalk" src="https://img.shields.io/badge/FunAudioLLM-DingTalk-green"></a></td>
 <td style="text-align:center;"><a href="./asset/QR.jpg"><img alt="InspireMusic in WeChat" src="https://img.shields.io/badge/InspireMusic-WeChat-green"></a></td>
 </tr><tr><td style="text-align:center;"><img alt="Light" src="./asset/dingding.png" width="100%" />
 <td style="text-align:center;"><img alt="Light" src="./asset/QR.jpg" width="80%" /></td>
