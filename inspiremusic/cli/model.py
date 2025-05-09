@@ -81,12 +81,12 @@ class InspireMusicModel:
 
     def load(self, llm_model, flow_model, hift_model, wavtokenizer_model):
         if llm_model is not None:
-            self.llm.load_state_dict(torch.load(llm_model, map_location=self.device))
+            self.llm.load_state_dict(torch.load(llm_model, map_location=self.device, weights_only=True))
             self.llm.to(self.device).to(self.dtype).eval()
         else:
             self.llm = None
         if flow_model is not None:
-            self.flow.load_state_dict(torch.load(flow_model, map_location=self.device))
+            self.flow.load_state_dict(torch.load(flow_model, map_location=self.device, weights_only=True))
             self.flow.to(self.device).eval()
         if hift_model is not None:
             if ".pt" not in hift_model:
