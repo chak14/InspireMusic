@@ -1,4 +1,4 @@
-<p> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./photo/logo.png" width="100%"></a></p>
+<p> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./pic/logo.png" width="100%"></a></p>
 
 <p>
  <a href="https://funaudiollm.github.io/inspiremusic" target="_blank"><img alt="Demo" src="https://img.shields.io/badge/Demo-InspireMusic?labelColor=%20%23FDB062&label=InspireMusic&color=%20%23f79009"></a>
@@ -17,7 +17,6 @@
 | [**Quick Start**](#quick-start)
 | [**Tutorial**](https://github.com/FunAudioLLM/InspireMusic#tutorial)
 | [**Models**](#models)
-| [**Contact**](#contact)
 
 ---
 <a name="highlight"></a>
