@@ -100,14 +100,14 @@ Example command to build a docker compose environment and docker image from the 
 ```
 docker compose up -d --build
 ```
-Run the following command to attach to the docker container in interactive mode.
-```shell
+Example command to attach to the docker container in interactive mode.
+```
 docker exec -ti inspire-music bash
 ```
 
 <a name="quick-start"></a>
 ### Quick Start
-Here is a example command for music generation infer. 
+an example command for music generation infer. 
 ```
 cd InspireMusic
 mkdir -p pretrained_models
@@ -122,8 +122,7 @@ cd examples/music_generation
 # run a quick inference example
 sh infer_1.5b_long.sh
 ```
-
-Here is a quick start running script to run music generation task including data preparation pipeline, model training, inference. 
+an example running script to run music generation task. 
 ```
 cd InspireMusic/examples/music_generation/
 sh run.sh
@@ -144,7 +143,7 @@ python -m inspiremusic.cli.inference --task text-to-music -m "InspireMusic-1.5B-
 python -m inspiremusic.cli.inference --task text-to-music -g 0 -t "Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance." --fast True
 ```
 
-```python
+```
 from inspiremusic.cli.inference import InspireMusicModel, env_variables
 if __name__ == "__main__":
   env_variables()
