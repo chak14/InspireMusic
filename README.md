@@ -1,4 +1,4 @@
-<p> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./asset/logo.png" width="100%"></a></p>
+<p> <a href="https://github.com/FunAudioLLM/InspireMusic" target="_blank"> <img alt="logo" src="./photo/logo.png" width="100%"></a></p>
 
 <p>
  <a href="https://funaudiollm.github.io/inspiremusic" target="_blank"><img alt="Demo" src="https://img.shields.io/badge/Demo-InspireMusic?labelColor=%20%23FDB062&label=InspireMusic&color=%20%23f79009"></a>
@@ -11,17 +11,16 @@
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/FunAudioLLM/InspireMusic) Please support our community by starring it 感谢大家支持
 
-[**Highlights**](#highlights)
+| [**Highlight**](#highlights)
 | [**Introduction**](#introduction)
 | [**Installation**](#installation)
 | [**Quick Start**](#quick-start)
 | [**Tutorial**](https://github.com/FunAudioLLM/InspireMusic#tutorial)
-| [**Models**](#model-zoo)
+| [**Models**](#models)
 | [**Contact**](#contact)
 
 ---
-<a name="highlights"></a>
-## Highlights
+<a name="highlight"></a>
 **InspireMusic** focuses on music generation, song generation, and audio generation.
 - A unified toolkit designed for music, song, and audio generation.
 - Music generation tasks with high audio quality. 
@@ -29,12 +28,6 @@
 
 <a name="introduction"></a>
 ## Introduction
-> [!Note]
-> This repo contains the algorithm infrastructure and some simple examples.
-
-> [!Tip]
-> To preview the performance, please refer to [InspireMusic Demo Page](https://funaudiollm.github.io/inspiremusic).
-
 InspireMusic is a toolkit for music, song, and audio generation. It consists of an autoregressive transformer with a flow-matching based model. This toolkit is for users to generate music, song, and audio. InspireMusic can generate high-quality music in long-form with text-to-music and music continuation. InspireMusic incorporates audio tokenizers with autoregressive transformer and flow-matching modeling to generate music, song, and audio with text and music prompts. The toolkit currently supports music generation.
 
 ## InspireMusic
@@ -46,7 +39,7 @@ Figure 1: An overview of the InspireMusic. We introduce InspireMusic, a toolkit 
 ## Installation
 ### Clone
 - Clone the repo
-``` sh
+```
 git clone --recursive https://github.com/FunAudioLLM/InspireMusic.git
 # If you failed to clone submodule due to network failures, please run the following command until success
 cd InspireMusic
@@ -60,7 +53,7 @@ InspireMusic requires Python>=3.8, PyTorch>=2.0.1, flash attention==2.6.2/2.6.3,
 
 - Install Conda: please see https://docs.conda.io/en/latest/miniconda.html
 - Create Conda env:
-``` shell
+```
 conda create -n inspiremusic python=3.8
 conda activate inspiremusic
 cd InspireMusic
@@ -72,14 +65,14 @@ pip install flash-attn --no-build-isolation
 ```
 
 - Install within the package:
-```shell
+```
 cd InspireMusic
 # You can run to install the packages
 python setup.py install
 pip install flash-attn --no-build-isolation
 ```
 We also recommend having `sox` or `ffmpeg` installed, either through your system or Anaconda:
-```shell
+```
 # # Install sox
 # ubuntu
 sudo apt-get install sox libsox-dev
@@ -94,18 +87,18 @@ sudo yum install ffmpeg
 ```
 
 ### Use Docker
-Run the following command to build a docker image from Dockerfile provided.
-```shell
+Example command to build a docker image from Dockerfile provided.
+```
 docker build -t inspiremusic .
 ```
-Run the following command to start the docker container in interactive mode.
-```shell
+Example command to start the docker container in interactive mode.
+```
 docker run -ti --gpus all -v .:/workspace/InspireMusic inspiremusic
 ```
 
 ### Use Docker Compose
-Run the following command to build a docker compose environment and docker image from the docker-compose.yml file.
-```shell
+Example command to build a docker compose environment and docker image from the docker-compose.yml file.
+```
 docker compose up -d --build
 ```
 Run the following command to attach to the docker container in interactive mode.
@@ -115,8 +108,8 @@ docker exec -ti inspire-music bash
 
 <a name="quick-start"></a>
 ### Quick Start
-Here is a quick example inference script for music generation. 
-``` shell
+Here is a example command for music generation infer. 
+```
 cd InspireMusic
 mkdir -p pretrained_models
 
@@ -132,15 +125,15 @@ sh infer_1.5b_long.sh
 ```
 
 Here is a quick start running script to run music generation task including data preparation pipeline, model training, inference. 
-``` shell
+```
 cd InspireMusic/examples/music_generation/
 sh run.sh
 ```
 
-### One-line Inference
+### Inference
 #### Text-to-music Task
-One-line Shell script for text-to-music task.
-```shell
+Example script for text-to-music task.
+```
 cd examples/music_generation
 # with flow matching, use one-line command to get a quick try
 python -m inspiremusic.cli.inference
@@ -152,10 +145,8 @@ python -m inspiremusic.cli.inference --task text-to-music -m "InspireMusic-1.5B-
 python -m inspiremusic.cli.inference --task text-to-music -g 0 -t "Experience soothing and sensual instrumental jazz with a touch of Bossa Nova, perfect for a relaxing restaurant or spa ambiance." --fast True
 ```
 
-Alternatively, you can run the inference with just a few lines of Python code.
 ```python
-from inspiremusic.cli.inference import InspireMusicModel
-from inspiremusic.cli.inference import env_variables
+from inspiremusic.cli.inference import InspireMusicModel, env_variables
 if __name__ == "__main__":
   env_variables()
   model = InspireMusicModel(model_name = "InspireMusic-Base")
@@ -163,8 +154,8 @@ if __name__ == "__main__":
 ```
 
 #### Music Continuation Task
-One-line Shell script for music continuation task.
-```shell
+Example script for music continuation task.
+```
 cd examples/music_generation
 # with flow matching
 python -m inspiremusic.cli.inference --task continuation -g 0 -a audio_prompt.wav
@@ -172,8 +163,7 @@ python -m inspiremusic.cli.inference --task continuation -g 0 -a audio_prompt.wa
 python -m inspiremusic.cli.inference --task continuation -g 0 -a audio_prompt.wav --fast True
 ```
 
-Alternatively, you can run the inference with just a few lines of Python code.
-```python
+```
 from inspiremusic.cli.inference import InspireMusicModel
 from inspiremusic.cli.inference import env_variables
 if __name__ == "__main__":
@@ -184,11 +174,10 @@ if __name__ == "__main__":
   # use both text prompt and audio prompt
   model.inference("continuation", "Continue to generate jazz music.", "audio_prompt.wav")
 ```
-<a name="model-zoo"></a>
+<a name="model"></a>
 ## Models
-### Download Models
 You may download our pretrained InspireMusic models for music generation.
-```shell
+```
 # use git to download models，please make sure git lfs is installed.
 mkdir -p pretrained_models
 git clone https://www.modelscope.cn/iic/InspireMusic.git pretrained_models/InspireMusic
@@ -216,8 +205,8 @@ The table below presents the links to the ModelScope and Huggingface model hub.
 At the moment, InspireMusic contains the training and inference codes for [music generation](https://github.com/FunAudioLLM/InspireMusic/tree/main/examples/music_generation). 
 
 ### Training
-Here is an example to train LLM model, support BF16/FP16 training. 
-```shell
+an example to train LLM model, support BF16/FP16 training. 
+```
 torchrun --nnodes=1 --nproc_per_node=8 \
     --rdzv_id=1024 --rdzv_backend="c10d" --rdzv_endpoint="localhost:0" \
     inspiremusic/bin/train.py \
@@ -236,9 +225,8 @@ torchrun --nnodes=1 --nproc_per_node=8 \
     --deepspeed.save_states model+optimizer \
     --fp16
 ```
-
-Here is an example code to train flow matching model, does not support FP16 training.
-```shell
+an example code to train flow matching model, does not support FP16 training.
+```
 torchrun --nnodes=1 --nproc_per_node=8 \
     --rdzv_id=1024 --rdzv_backend="c10d" --rdzv_endpoint="localhost:0" \
     inspiremusic/bin/train.py \
@@ -259,13 +247,13 @@ torchrun --nnodes=1 --nproc_per_node=8 \
 
 ### Inference
 
-Here is an example script to quickly do model inference.
-```shell
+An example script to quickly do model inference.
+```
 cd InspireMusic/examples/music_generation/
 sh infer.sh
 ```
-Here is an example code to run inference with normal mode, i.e., with flow matching model for text-to-music and music continuation tasks.
-```shell
+an example code to run inference with normal mode, i.e., with flow matching model for text-to-music and music continuation tasks.
+```
 pretrained_model_dir = "pretrained_models/InspireMusic/"
 for task in 'text-to-music' 'continuation'; do
   python inspiremusic/bin/inference.py --task $task \
@@ -281,7 +269,7 @@ for task in 'text-to-music' 'continuation'; do
 done
 ```
 Here is an example code to run inference with fast mode, i.e., without flow matching model for text-to-music and music continuation tasks.
-```shell
+```
 pretrained_model_dir = "pretrained_models/InspireMusic/"
 for task in 'text-to-music' 'continuation'; do
   python inspiremusic/bin/inference.py --task $task \
@@ -298,28 +286,25 @@ for task in 'text-to-music' 'continuation'; do
 done
 ```
 
-### Hardware Requirements
-Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with real-time factor (RTF) around 1.4~1.8. For normal mode, we recommend using hardware with at least 24GB of GPU memory for better experience. For fast mode, 12GB GPU memory is enough.
 
 ## Roadmap
-- [x] 2024/12
-  - [x] 75Hz InspireMusic-Base model for music generation
+-  2024/12
+  -  75Hz InspireMusic-Base model for music generation
     
-- [x] 2025/01
-    - [x] Support to generate 48kHz
-    - [x] 75Hz InspireMusic-1.5B model for music generation
-    - [x] 75Hz InspireMusic-1.5B-Long model for long-form music generation
+-  2025/01
+    -  Support to generate 48kHz
+    -  75Hz InspireMusic-1.5B model for music generation
+    -  75Hz InspireMusic-1.5B-Long model for long-form music generation
 
-- [x] 2025/02
-    - [x] Release technical report
+-  2025/02
+    -  Release technical report
 
-- [ ] Future work
-    - [ ] InspireAudio model for audio generation
-    - [ ] InspireSong model for song generation
-    - [ ] Support multilingual generation
+-  Future work
+ - InspireAudio model for audio generation
+ - InspireSong model for song generation
+ - Support multilingual generation
 
 ## Citation
-```bibtex
 @misc{InspireMusic2025,
       title={InspireMusic: Integrating Super Resolution and Large Language Model for High-Fidelity Long-Form Music Generation}, 
       author={Chong Zhang and Yukun Ma and Qian Chen and Wen Wang and Shengkui Zhao and Zexu Pan and Hao Wang and Chongjia Ni and Trung Hieu Nguyen and Kun Zhou and Yidi Jiang and Chaohong Tan and Zhifu Gao and Zhihao Du and Bin Ma},
@@ -329,27 +314,9 @@ Previous test on H800 GPU, InspireMusic could generate 30 seconds audio with rea
       primaryClass={cs.SD},
       url={https://arxiv.org/abs/2503.00084}, 
 }
-```
----
-<a name="contact"></a>
-## Community & Discussion
-* Welcome to join our DingTalk and WeChat groups to share and discuss algorithms, technology, and user experience feedback. You may scan the following QR codes to join our official chat groups accordingly.
-
-<p align="center"><table><tr>
-<td style="text-align:center;"><a href="./asset/dingding.png"><img alt="FunAudioLLM in DingTalk" src="https://img.shields.io/badge/FunAudioLLM-DingTalk-green"></a></td>
-<td style="text-align:center;"><a href="./asset/QR.jpg"><img alt="InspireMusic in WeChat" src="https://img.shields.io/badge/InspireMusic-WeChat-green"></a></td>
-</tr><tr><td style="text-align:center;"><img alt="Light" src="./asset/dingding.png" width="100%" />
-<td style="text-align:center;"><img alt="Light" src="./asset/QR.jpg" width="80%" /></td>
-</tr></table></p>
 
 ## Acknowledgement
-1. codes from CosyVoice.
-3. codes from WavTokenizer.
-4. codes from AcademiCodec.
-5. codes from FunASR.
-6. codes from FunCodec.
-7. codes from Matcha-TTS.
-9. codes from WeNet.
+1. codes from CosyVoice, WavTokenizer，AcademiCodec，FunASR， FunCodec， Matcha-TTS，WeNet.
 
 ## Disclaimer
-The content provided above is for research purposes only and is intended to demonstrate technical capabilities. Some examples are sourced from the internet. If any content infringes on your rights, please contact us to request its removal.
+The content provided above is for research purposes only.
