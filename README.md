@@ -303,7 +303,8 @@ done
  - Support multilingual generation
 
 ## Citation
-@misc{InspireMusic2025,
+```
+@inproceedings{InspireMusic2025,
       title={InspireMusic: Integrating Super Resolution and Large Language Model for High-Fidelity Long-Form Music Generation}, 
       author={Chong Zhang and Yukun Ma and Qian Chen and Wen Wang and Shengkui Zhao and Zexu Pan and Hao Wang and Chongjia Ni and Trung Hieu Nguyen and Kun Zhou and Yidi Jiang and Chaohong Tan and Zhifu Gao and Zhihao Du and Bin Ma},
       year={2025},
@@ -312,6 +313,7 @@ done
       primaryClass={cs.SD},
       url={https://arxiv.org/abs/2503.00084}, 
 }
+```
 
 ## Acknowledgement
 1. codes from CosyVoice, WavTokenizer，AcademiCodec，FunASR， FunCodec， Matcha-TTS，WeNet.
